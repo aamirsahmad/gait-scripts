@@ -31,7 +31,7 @@ def data_processing_driver(str_data):
     return dl_sample_list
 
 
-def parse_args(self):
+def parse_args():
     parser = ArgumentParser()
     parser.add_argument("filename")
     args = parser.parse_args()
@@ -42,6 +42,10 @@ def main():
     args = parse_args()
     file = args.filename
     str_data = ""
+    with open(file, 'r') as f:
+        for line in f:
+            str_data += line
+
     dl_sample_list = data_processing_driver(str_data)
 
 

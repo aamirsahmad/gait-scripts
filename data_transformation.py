@@ -37,15 +37,19 @@ def find_all_peaks_in_partition(str_data):
     peak_map = OrderedDict()
     try:
         str_data = iter(str_data)
+        iz = iter(str_data)
         # for i in range(len(str_data)):
         #     index = int((str_data[i].split(',')[0]).strip())
         #     peak_map[index] = False
 
         e1, e2 = next(str_data), next(str_data)
         is_peak = False
+        for l in iz:
+            print(l)
         for e3 in str_data:
             is_peak = False
             # vSums values : v1, v2, v3
+            print("ln 49: " + e3)
             v1 = float((e1.split(',')[6]).strip())
             v2 = float((e2.split(',')[6]).strip())
             v3 = float((e3.split(',')[6]).strip())
