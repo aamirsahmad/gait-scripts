@@ -47,6 +47,7 @@ def main():
             str_data += line
 
     dl_sample_list = data_processing_driver(str_data)
+    print(dl_sample_list)
 
 
 if __name__ == "__main__":

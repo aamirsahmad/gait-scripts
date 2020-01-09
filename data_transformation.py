@@ -36,20 +36,24 @@ def find_all_peaks_in_partition(str_data):
     # print(str_data)
     peak_map = OrderedDict()
     try:
-        str_data = iter(str_data)
-        iz = iter(str_data)
+        str_data = iter(str_data.splitlines())
         # for i in range(len(str_data)):
         #     index = int((str_data[i].split(',')[0]).strip())
         #     peak_map[index] = False
 
-        e1, e2 = next(str_data), next(str_data)
+        next(str_data)
+        e1, e2, e3 = next(str_data), next(str_data), next(str_data)
         is_peak = False
-        for l in iz:
-            print(l)
         for e3 in str_data:
+            # print("e1")
+            # print(e1)
+            # print("e2")
+            # print(e2)
+            # print("e3")
+            # print(e3)
+
             is_peak = False
             # vSums values : v1, v2, v3
-            print("ln 49: " + e3)
             v1 = float((e1.split(',')[6]).strip())
             v2 = float((e2.split(',')[6]).strip())
             v3 = float((e3.split(',')[6]).strip())
@@ -76,6 +80,7 @@ def find_all_peaks_in_partition(str_data):
                 e2 = e3
     except StopIteration:
         pass
+    # print(peak_map)
     return peak_map
 
 
@@ -102,14 +107,15 @@ def gait_segmentation(str_data, peak_map):
 
     second_peak_index = next(peak_map_iter)
 
-    str_data = iter(str_data)
+    str_data = iter(str_data.splitlines())
+    next(str_data) # skip headings
 
     try:
         # discard data until first peak
-        while (True):
+        while True:
             data = next(str_data)
             index = int((data.split(',')[0]).strip())  # index of e2
-            if (index == first_peak_index):
+            if index == first_peak_index:
                 peaks_to_discover -= 1
                 break
 
@@ -141,6 +147,7 @@ def gait_segmentation(str_data, peak_map):
                 break
     except StopIteration:
         pass
+    # print(samples_list)
     return samples_list
 
 
@@ -203,14 +210,17 @@ def sampling_and_interpolation(sample):
     dfList_accY = list(resampled_df_accY['accY'])
     dfList_accZ = list(resampled_df_accZ['accZ'])
 
-    str_accX = ' '.join([str(round(s, DECIMAL_PLACES)) for s in dfList_accX])
-    str_accY = ' '.join([str(round(s, DECIMAL_PLACES)) for s in dfList_accY])
-    str_accZ = ' '.join([str(round(s, DECIMAL_PLACES)) for s in dfList_accZ])
+    # str_accX = ' '.join([str(round(s, DECIMAL_PLACES)) for s in dfList_accX])
+    # str_accY = ' '.join([str(round(s, DECIMAL_PLACES)) for s in dfList_accY])
+    # str_accZ = ' '.join([str(round(s, DECIMAL_PLACES)) for s in dfList_accZ])
+    acc_x = [round(s, DECIMAL_PLACES) for s in dfList_accX]
+    acc_y = [round(s, DECIMAL_PLACES) for s in dfList_accY]
+    acc_z = [round(s, DECIMAL_PLACES) for s in dfList_accZ]
 
     res.append(userID)
-    res.append(str_accX)
-    res.append(str_accY)
-    res.append(str_accZ)
+    res.append(acc_x)
+    res.append(acc_y)
+    res.append(acc_z)
 
     # returns [userID, str(acc_x values list), str(acc_y values list), str(acc_z values list)]
     return res
