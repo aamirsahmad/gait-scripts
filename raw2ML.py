@@ -51,6 +51,10 @@ def generate_files(dl_sample_list):
     f3 = open('train_acc_z.txt', 'a+')
     f4 = open('train_id.txt', 'a+')
 
+    f5 = open('train_gyr_x.txt', 'a+')
+    f6 = open('train_gyr_y.txt', 'a+')
+    f7 = open('train_gyr_z.txt', 'a+')
+    
     print(len(dl_sample_list))
     for sample in dl_sample_list:
         # sys.exit()
@@ -58,15 +62,22 @@ def generate_files(dl_sample_list):
 
         for d in sample[1]:
             f1.write(str(d) + ' ')
+            f5.write('0' + ' ')
         f1.write('\n')
+        f5.write('\n')
+
 
         for d in sample[2]:
             f2.write(str(d) + ' ')
+            f6.write('0' + ' ')
         f2.write('\n')
+        f6.write('\n')
 
         for d in sample[3]:
             f3.write(str(d) + ' ')
+            f7.write('0' + ' ')
         f3.write('\n')
+        f7.write('\n')
 
         # f1.write(row[1] + '\n')
         # f2.write(row[2] + '\n')
