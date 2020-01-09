@@ -91,7 +91,7 @@ def gait_segmentation(str_data, peak_map):
     """
     samples_list = []  # result
     # each sample will be a csv like table string ready for pandas
-    peaks_to_discover = 5
+    peaks_to_discover = len(peak_map)
     # index,userID,timeMs,accX,accY,accZ,vSum
 
     # state 0 : write data until peak, no new line, go to state 1
