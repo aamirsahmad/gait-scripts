@@ -82,37 +82,6 @@ def find_all_peaks_in_partition(str_data):
 
     return peak_map
 
-    #     for e3 in str_data:
-    #         is_peak = False
-    #         v1 = float((e1.split(',')[6]).strip())
-    #         v2 = float((e2.split(',')[6]).strip())
-    #         v3 = float((e3.split(',')[6]).strip())
-
-    #         i2 = int((e2.split(',')[0]).strip())  # index of e2
-    #         # print(v3)
-    #         if (v1 < v2 and v3 < v2):
-    #             # it's some peak
-    #             if (v2 > Y_AXIS_THRESHOLD):
-    #                 # it's a Real peak (since it's 'first' peak in the window)
-    #                 # move the sliding window
-    #                 peak_map[i2] = True
-    #                 is_peak = True
-    #                 # slide the window
-    #                 for i in range(SKIP_FRAMES - 1):
-    #                     next(str_data)
-    #                 # adjust pointers
-    #                 e1 = next(str_data)
-    #                 e2 = next(str_data)
-
-    #         # move pointers
-    #         if (is_peak == False):
-    #             e1 = e2
-    #             e2 = e3
-    # except StopIteration:
-    #     pass
-    # # print(peak_map)
-    # return peak_map
-
 
 def gait_segmentation(str_data, peak_map):
     """
