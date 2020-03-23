@@ -6,10 +6,7 @@ import pandas as pd
 
 # NOTE: The print statements in this module are crucial for debugging (DO NOT remove)
 # Consider replacing them with logger INFO/WARN
-
-Y_AXIS_THRESHOLD = 28.00  #
-SKIP_FRAMES = 35  # a good heuristics value for 50Hz can go up to 45
-
+GAIT_CYCLE_LENGTH_MS = 1000
 
 def find_all_peaks_in_partition(str_data):
     """
@@ -67,7 +64,7 @@ def find_all_peaks_in_partition(str_data):
                     max_line_list = line_list
                     max_e2 = e2
 
-                if ((int(timestamp) - int(last_timestamp)) > 1000):
+                if ((int(timestamp) - int(last_timestamp)) > GAIT_CYCLE_LENGTH_MS):
                     max_vsum = 0
                     last_timestamp = max_timestamp
                     peak_map[i2] = True
