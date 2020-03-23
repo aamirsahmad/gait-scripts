@@ -24,64 +24,94 @@ def find_all_peaks_in_partition(str_data):
         (78, 5, 1574587264032, -1.403481, 4.89542, 8.473579, 9.886174);
         (index,userID,timeMs,accX,accY,accZ,vSum)
     """
+    max_vsum = 0
+    max_line_list = ''
+    max_timestamp = 0
+    last_timestamp = 0
+    max_e2 = ''
+
     index = 1  # skip first
 
-    # data_list = str_data.split('\n', 1)
-    # str_data = data_list[1]
-
-    # for line in str_data:
-    # print(str_data)
-    # str_data = str_data.splitlines()
-    # initialize map
-    # print(str_data)
     peak_map = OrderedDict()
     try:
         str_data = iter(str_data.splitlines())
-        # for i in range(len(str_data)):
-        #     index = int((str_data[i].split(',')[0]).strip())
-        #     peak_map[index] = False
 
         next(str_data)
         e1, e2, e3 = next(str_data), next(str_data), next(str_data)
         is_peak = False
-        for e3 in str_data:
-            # print("e1")
-            # print(e1)
-            # print("e2")
-            # print(e2)
-            # print("e3")
-            # print(e3)
 
+        for e3 in str_data:
             is_peak = False
-            # vSums values : v1, v2, v3
             v1 = float((e1.split(',')[6]).strip())
             v2 = float((e2.split(',')[6]).strip())
             v3 = float((e3.split(',')[6]).strip())
 
             i2 = int((e2.split(',')[0]).strip())  # index of e2
-            # print(v3)
             if (v1 < v2 and v3 < v2):
                 # it's some peak
-                if (v2 > Y_AXIS_THRESHOLD):
-                    # it's a Real peak (since it's 'first' peak in the window)
-                    # move the sliding window
+                peak_index = int((e2.split(',')[0]).strip())
+                line = e2.replace("\n", "").split(",")
+                index = line[0].strip()
+                userId = line[1].strip()
+                timestamp = line[2].strip()
+                accelerometer_x = line[3].strip()
+                accelerometer_y = line[4].strip()
+                accelerometer_z = line[5].strip()
+                vector_sum = line[6].strip()
+                line_list = [index, str(userId), timestamp, accelerometer_x, accelerometer_y, accelerometer_z,
+                                vector_sum]
+                if(int(last_timestamp) == 0):
+                    last_timestamp = timestamp
+                if(float(vector_sum) > float(max_vsum)):
+                    max_vsum = vector_sum
+                    max_line_list = line_list
+                    max_e2 = e2
+
+                if ((int(timestamp) - int(last_timestamp)) > 1000):
+                    max_vsum = 0
+                    last_timestamp = max_timestamp
                     peak_map[i2] = True
-                    is_peak = True
-                    # slide the window
-                    for i in range(SKIP_FRAMES - 1):
-                        next(str_data)
-                    # adjust pointers
-                    e1 = next(str_data)
-                    e2 = next(str_data)
+                    # peaks.append(max_line_list)
+                    # peakFile.write(max_e2)
 
             # move pointers
-            if (is_peak == False):
-                e1 = e2
-                e2 = e3
+            e1 = e2
+            e2 = e3
     except StopIteration:
         pass
-    # print(peak_map)
+
     return peak_map
+
+    #     for e3 in str_data:
+    #         is_peak = False
+    #         v1 = float((e1.split(',')[6]).strip())
+    #         v2 = float((e2.split(',')[6]).strip())
+    #         v3 = float((e3.split(',')[6]).strip())
+
+    #         i2 = int((e2.split(',')[0]).strip())  # index of e2
+    #         # print(v3)
+    #         if (v1 < v2 and v3 < v2):
+    #             # it's some peak
+    #             if (v2 > Y_AXIS_THRESHOLD):
+    #                 # it's a Real peak (since it's 'first' peak in the window)
+    #                 # move the sliding window
+    #                 peak_map[i2] = True
+    #                 is_peak = True
+    #                 # slide the window
+    #                 for i in range(SKIP_FRAMES - 1):
+    #                     next(str_data)
+    #                 # adjust pointers
+    #                 e1 = next(str_data)
+    #                 e2 = next(str_data)
+
+    #         # move pointers
+    #         if (is_peak == False):
+    #             e1 = e2
+    #             e2 = e3
+    # except StopIteration:
+    #     pass
+    # # print(peak_map)
+    # return peak_map
 
 
 def gait_segmentation(str_data, peak_map):
